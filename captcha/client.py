@@ -6,7 +6,8 @@ if six.PY2:
     from urllib2 import Request as urllib_request, urlopen
 elif six.PY3:
     from urllib.parse import urlencode
-    from urllib import request as urllib_request, urlopen
+    from urllib import request as urllib_request
+    from urllib.request import urlopen
 
 from django.conf import settings
 from django.template.loader import render_to_string
