@@ -3,10 +3,10 @@ import urllib
 from django.utils import six
 if six.PY2:
     from urllib import urlencode
-    from urllib2 import Request as urllib_request, urlopen
+    from urllib2 import Request, urlopen
 elif six.PY3:
     from urllib.parse import urlencode
-    from urllib import request as urllib_request
+    from urllib.request import Request
     from urllib.request import urlopen
 
 from django.conf import settings
@@ -109,7 +109,7 @@ def submit(recaptcha_challenge_field,
     else:
         verify_url = 'http://%s/recaptcha/api/verify' % VERIFY_SERVER
 
-    request = urllib_request(
+    request = Request(
         url=verify_url,
         data=params,
         headers={
