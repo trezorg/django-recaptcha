@@ -1,13 +1,13 @@
 import json
 import urllib
 from django.utils import six
-if six.PY2:
-    from urllib import urlencode
-    from urllib2 import Request, urlopen
-elif six.PY3:
+if six.PY3:
     from urllib.parse import urlencode
     from urllib.request import Request
     from urllib.request import urlopen
+else:
+    from urllib import urlencode
+    from urllib2 import Request, urlopen
 
 from django.conf import settings
 from django.template.loader import render_to_string
