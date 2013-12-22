@@ -18,9 +18,15 @@ class ReCaptcha(forms.widgets.Widget):
         self.js_attrs = attrs
         super(ReCaptcha, self).__init__(*args, **kwargs)
 
+    def id_for_label(self, id_):
+        return self.recaptcha_response_name
+
     def render(self, name, value, attrs=None):
         return mark_safe(u'%s' % client.displayhtml(
-            self.public_key, self.js_attrs, use_ssl=self.use_ssl))
+            self.recaptcha_challenge_name,
+            self.recaptcha_response_name,
+            self.public_key, self.js_attrs,
+            use_ssl=self.use_ssl))
 
     def value_from_datadict(self, data, files, name):
         return [data.get(self.recaptcha_challenge_name, None),

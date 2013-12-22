@@ -36,7 +36,9 @@ class RecaptchaResponse(object):
         self.error_code = error_code
 
 
-def displayhtml(public_key,
+def displayhtml(recaptcha_challenge_name,
+                recaptcha_response_name,
+                public_key,
                 attrs,
                 use_ssl=False,
                 error=None):
@@ -59,6 +61,8 @@ def displayhtml(public_key,
         attrs['lang'] = get_language()[:2]
 
     return render_to_string(WIDGET_TEMPLATE, {
+        'challenge_name': recaptcha_challenge_name,
+        'response_name': recaptcha_response_name,
         'api_server': server,
         'public_key': public_key,
         'error_param': error_param,
