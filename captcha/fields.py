@@ -15,8 +15,8 @@ class ReCaptchaField(forms.CharField):
         'captcha_invalid': _(u'Incorrect, please try again.')
     }
 
-    def __init__(self, public_key=None, private_key=None, use_ssl=None, \
-            attrs={}, *args, **kwargs):
+    def __init__(self, public_key=None, private_key=None, use_ssl=None,
+                 attrs={}, *args, **kwargs):
         """
         ReCaptchaField can accepts attributes which is a dictionary of
         attributes to be passed ot the ReCaptcha widget class. The widget will
@@ -25,14 +25,14 @@ class ReCaptchaField(forms.CharField):
         https://code.google.com/apis/recaptcha/docs/customization.html
         """
         public_key = public_key if public_key else settings.\
-                RECAPTCHA_PUBLIC_KEY
+            RECAPTCHA_PUBLIC_KEY
         self.private_key = private_key if private_key else \
-                settings.RECAPTCHA_PRIVATE_KEY
-        self.use_ssl = use_ssl if use_ssl != None else getattr(settings, \
-                'RECAPTCHA_USE_SSL', False)
+            settings.RECAPTCHA_PRIVATE_KEY
+        self.use_ssl = use_ssl if use_ssl is not None else \
+            getattr(settings, 'RECAPTCHA_USE_SSL', False)
 
-        self.widget = ReCaptcha(public_key=public_key, use_ssl=self.use_ssl, \
-                attrs=attrs)
+        self.widget = ReCaptcha(public_key=public_key, use_ssl=self.use_ssl,
+                                attrs=attrs)
         self.required = True
         super(ReCaptchaField, self).__init__(*args, **kwargs)
 
@@ -57,9 +57,10 @@ class ReCaptchaField(forms.CharField):
                 recaptcha_response_value == 'PASSED':
             return values[0]
 
-        check_captcha = client.submit(recaptcha_challenge_value, \
-                recaptcha_response_value, private_key=self.private_key, \
-                remoteip=self.get_remote_ip(), use_ssl=self.use_ssl)
+        check_captcha = client.submit(
+            recaptcha_challenge_value, recaptcha_response_value,
+            private_key=self.private_key, remoteip=self.get_remote_ip(),
+            use_ssl=self.use_ssl)
         if not check_captcha.is_valid:
             raise forms.util.ValidationError(
                 self.error_messages['captcha_invalid']
